@@ -1,6 +1,6 @@
-# vue-test2
+# Shadowswell-vue
 
-> A Vue.js project
+> Remaking Shadowswell using Vue
 
 ## Build Setup
 

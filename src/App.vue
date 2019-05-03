@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png" id="vue_img">
-    <shadowswell/>
+    <shadowswall/>
   </div>
 </template>
 
 <script>
-  import shadowswell from './components/shadowswell'
+  import shadowswall from './components/shadowswall'
 
   export default {
     name: 'App',
     components: {
-      shadowswell,
+      shadowswall,
     }
   }
 </script>

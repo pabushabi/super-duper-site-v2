@@ -1,9 +1,15 @@
 <template>
   <div class="content">
     <header>
-      <a href="/" class="logo">Shadowswell</a>
+      <span @click="main" class="logo">Shadowswall <small>β</small></span>
+
+      <div class="reg_log">
+        <ol class="log"><span id="log" v-if="!logged" @click="auth">Войти</span></ol>
+        <ol class="log"><span id="reg" v-if="!logged" @click="auth; reg = true">Регистрация</span></ol>
+        <ol class="log"><span id="pro" v-if="logged" @click="profile">Профиль {{user}}</span></ol>
+      </div>
     </header>
-    <div id="main">
+    <div id="main" v-if="page === 0">
       <div class="search_bar">
         <form class="search_form" method="post" action="/" name="search">
           <label id="search_label" for="search_input">Поиск {{searchReq}}</label>
@@ -39,15 +45,35 @@
           </ul>
         </form>
       </div>
-    </div>
-    <section id="section">
-      <article  v-for="(item, index) in items" :key="index" :id=index ref="art" :class="['art', {resized : currentArt === index}]"
-      @click="currentArt = currentArt === index ? -1 : index">
-        <h2>{{item}}</h2>
-        <p class="text">{{text}}</p>
-      </article>
+      <section id="section">
+        <article  v-for="(item, index) in items" :key="index" :id=index :class="['art', {resized : currentArt === index}]"
+                  @click="currentArt = currentArt === index ? -1 : index">
+          <h2>{{item.name}}</h2>
+          <p class="text">{{item.name}}, <br> Специализация: <b>{{item.spec}}</b>,
+            <br> Возраст: {{item.age}}, Опыт работы: <b>{{item.experience}}</b>,
+            <br> Высшее образование: {{item.educ}}
+            <br> Предпочитаемый режим работы: {{item.time_mode}},
+            <br> Желаемая заработная плата: <b>{{item.pay_b}}р - {{item.pay_t}}р</b>.
+            <br> Коротко о себе: {{item.about}}</p>
+        </article>
 
-    </section>
+      </section>
+    </div>
+    <div id="login" v-if="page === 1">
+      <h1 id="form_h">Вход в аккаунт </h1>
+        <form class="reg_form" method="post" action="">
+          <div class="mail_container">
+            <label id="email_label" for="email">Электронная почта:</label><br />
+            <input id="email" type="email" name="login" placeholder="e-mail@domain.com" required="required" />
+          </div>
+          <div class="pass_container">
+            <label id="pass_label" for="pass">Пароль:</label><br />
+            <input id="pass" type="password" name="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}" title="8-32 латинских буквы(минимум одна заглавная и одна строчная) и цифры" placeholder="qwerty" required="required"/><img id="visible" src="/src/assets/visible.svg"/>
+          </div>
+          <button id="submit" type="submit">Подтвердить!</button>
+        </form>
+        <p id="errCode"></p>
+    </div>
   </div>
 </template>
 
@@ -57,22 +83,24 @@
     data() {
       return {
         currentArt: -1,
-        title: "test",
-        text: "lorem ipsum dolor sit amet",
-        // isResized: false,
         items: [
-          "Колосс Ростовский, Программист",
-          "Якоб Орещкин, Инжинер",
-          "Вася Пупкин, Программист",
-          "Артур Булочкин, Фотограф",
-          "Акакий Акакьев, Программист",
-          "Петр Левый, Программист",
-          "Антон Чехов, Фотограф"
+          {name: "Колосс Ростовский", spec: "Программист", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""},
+          {name: "Якоб Орещкин", spec: "Инжинер", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""},
+          {name: "Вася Пупкин", spec: "Программист", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""},
+          {name: "Артур Булочкин", spec: "Фотограф", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""},
+          {name: "Акакий Акакьев", spec: "Программист", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""},
+          {name: "Петр Левый", spec: "Программист", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""},
+          {name: "Антон Чехов", spec: "Фотограф", age: 1, experience: 1, educ: "", time_mode: "", pay_b: 1, pay_t: 1, about: ""}
         ],
         searchReq: '',
         checks: [],
         checkVac: '',
+        logged: false,
+        user: "",
+        page: 0,
       }
+    },
+    computed: {
     },
     watch: {
       searchReq: function () {
@@ -101,18 +129,17 @@
       });
     },
     methods: {
-      // createAnim(index) {
-        // if (!this.$refs.art[index].class === "art")
-        //   this.$refs.art[index].className += ' resized';
-        // else this.$refs.art[index].className = 'art';
-        // this.isResized = !this.isResized;
-      // },
       sendReq() {
         let req = JSON.stringify({type: "search", search_req: this.searchReq, radio: this.checkVac, check: this.checks});
         console.log(req);
+        // let head = new Headers({
+        //   'Content-Type': 'application/json'
+        // });
         // let promise = fetch('http://127.0.0.1:200/', {
+        //   headers: head,
         //   method: "POST",
         //   body: req,
+        //   mode: 'no-cors',
         // })
         //   .then((res) => {
         //     console.log(res)
@@ -121,10 +148,10 @@
         //     console.log(err)
         //   });
         let xhr = new XMLHttpRequest();
-        xhr.open("POST", "localhost:200/", true);
+        xhr.open("POST", "http://localhost:200/", true);
         xhr.setRequestHeader('Content-Type', 'application/json');
         xhr.send(req);
-        // xhr.addEventListener("load", () => {
+        xhr.addEventListener("load", () => {
           // $(".art").remove();
           // if (xhr.response === "" || xhr.response === undefined || xhr.response === null)
           //   $("#error-art").css("visibility", "visible");
@@ -132,8 +159,18 @@
           // addRes(da1);
           //
           // addVac(da1, da2);
-        // });
-      }
+        });
+      },
+      main() {
+        this.page = 0;
+
+      },
+      auth() {
+        this.page = 1;
+      },
+      profile() {
+        this.page = 1;
+      },
     }
   }
 </script>
@@ -155,6 +192,7 @@
   header {
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     height: 60px;
     background-color: white;
@@ -162,7 +200,7 @@
     z-index: 10;
   }
 
-  a.logo {
+  span.logo {
     position: relative;
     top: 17%;
     margin-left: 17%;
@@ -173,6 +211,7 @@
     color: #0B2349;
     font-size: xx-large;
     outline: none;
+    cursor: pointer;
   }
 
   h1 {
@@ -300,8 +339,7 @@
   .resized {
     height: 220px;
     /*border-top: 1px solid rgba(242, 96, 101, .4);*/
-    border-top: 1px solid var(--mainColor);
-    /*border-image: linear-gradient(75deg, var(--mainColor), #6d78ff);*/
+    border-image: linear-gradient(75deg, var(--mainColor), #6d78ff) 1;
     background-color: rgba(0, 0, 0, .015);
   }
 
@@ -316,5 +354,78 @@
     padding-bottom: 10px;
     color: #231f20;
     font-weight: lighter;
+  }
+
+  .reg_log {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 20px 17% 20px 20px;
+  }
+
+  .log {
+    display: inline;
+    margin-left: 30px;
+    cursor: pointer;
+  }
+
+  .log:nth-child(3) {
+    margin-left: 0;
+  }
+
+  span#log, span#reg, span#pro {
+    position: relative;
+    top: 1%;
+  }
+
+  span#log {
+    padding: 7px 10px;
+    margin-right: -10px;
+    color: #231f20;
+    background-color: #f8f8f8;
+    border-radius: 3px;
+    outline: none;
+  }
+
+  span#log:hover {
+    background-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .reg_form {
+    position: fixed;
+    margin-top: 250px;
+    left: 41%;
+    width: 18%;
+  }
+
+  #form_h {
+    text-align: center;
+    width: 100%;
+  }
+
+  #email_label, #pass_label {
+    font-size: larger;
+  }
+
+  button#submit, #submit1 {
+    position: relative;
+    top: 15px;
+    left: 60px;
+    width: 150px;
+    height: 30px;
+    background: linear-gradient(75deg, var(--mainColor), #6d78ff);
+    color: white;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 0;
+    outline: 0;
+    animation-duration: 1s;
+    transition: background-color 0.4s;
+  }
+
+  button#submit:hover, #submit1:hover {
+    box-shadow: 3px 3px 12px rgba(27, 31, 35, 0.15);
+    /*background-color: rgba(242, 96, 101, 0.85);*/
+    background: linear-gradient(-75deg, var(--mainColor), #6d78ff);
   }
 </style>

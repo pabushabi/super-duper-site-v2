@@ -1,7 +1,7 @@
 {
-  "name": "vue-test2",
+  "name": "shadowswell-vue",
   "version": "1.0.0",
-  "description": "A Vue.js project",
+  "description": "Remaiking Shadowswell using Vue",
   "author": "pabushabi <pabushabi@mail.ru>",
   "private": true,
   "scripts": {
