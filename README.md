@@ -12,6 +12,14 @@ npm install
 npm run serve
 ```
 
+### Start server
+```
+node server.js
+```
+
+> Page will be accessible at http://localhost:8080, server - http://localhost:200
+
+
 ### Compiles and minifies for production
 ```
 npm run build
