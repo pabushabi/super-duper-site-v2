@@ -1,15 +1,7 @@
 <template>
     <div class="content">
-        <header>
-            <span @click="main" class="logo">Shadowswall <small>β</small></span>
-
-            <div class="reg_log">
-                <ol class="log"><span id="log" v-if="!logged" @click="auth">Войти</span></ol>
-                <ol class="log"><span id="reg" v-if="!logged" @click="authR">Регистрация</span></ol>
-                <ol class="log"><span id="pro" v-if="logged" @click="profile">Профиль {{user}}</span></ol>
-            </div>
-        </header>
-        <div id="main" v-if="page === 0">
+        <sheader :logged="logged"/>
+        <div id="main">
             <div class="search_bar">
                 <form class="search_form" method="post" action="/" name="search">
                     <label id="search_label" for="search_input">Поиск {{searchReq}}</label>
@@ -50,28 +42,29 @@
                 <article v-for="(item, index) in items" :key="index" :id=index
                          :class="['art', {resized : currentArt === index}]"
                          @click="currentArt = currentArt === index ? -1 : index">
-                    <h2>{{item.first_name + " " + item.second_name}}</h2>
-                    <p class="text">{{item.first_name + " " + item.second_name}}, <br> Специализация: <b>{{item.spec}}</b>,
-                        <br> Возраст: {{item.age}}, Опыт работы: <b>{{item.experience}}</b>,
-                        <br> Высшее образование: {{item.educ}}
+                    <h2>{{item.first_name + " " + item.second_name + ", " + item.specialization}}</h2>
+                    <p class="text">{{item.first_name + " " + item.second_name}}, <br> Специализация: <b>{{item.specialization}}</b>,
+                        <br> Возраст: {{new Date().getFullYear() - item.birthdate.substring(0,
+                        item.birthdate.indexOf('-'))}},
+                        Опыт работы: <b>{{item.experience}}</b>,
+                        <br> Высшее образование: {{(item.education === 'true') ? 'Да' : 'Нет'}}
                         <br> Предпочитаемый режим работы: {{item.time_mode}},
                         <br> Желаемая заработная плата: <b>{{item.pay_b}}р - {{item.pay_t}}р</b>.
                         <br> Коротко о себе: {{item.about}}</p>
                 </article>
             </section>
         </div>
-        <login v-if="page === 1" title="Вход в аккаунт"></login>
-        <login v-if="page === 2" title="Регистрация"></login>
     </div>
 </template>
 
 <script>
     import axios from "axios";
     import Login from "@/components/login";
+    import Sheader from "@/components/sheader";
 
     export default {
         name: "shadowswell",
-        components: {Login},
+        components: {Sheader, Login},
         data() {
             return {
                 currentArt: -1,
@@ -97,9 +90,6 @@
             }
         },
         mounted() {
-            //   // if (xhr.response === "" || xhr.response === undefined || xhr.response === null)
-            //     // $("#error-art").css("visibility", "visible");
-
             axios.post("http://localhost:200/", {type: "articles"})
                 .then((res) => {
                     console.log(res);
@@ -113,9 +103,11 @@
         },
         methods: {
             sendReq() {
-                axios.post("http://localhost:200/", {type: "search", search_req: this.searchReq,
+                axios.post("http://localhost:200/", {
+                    type: "search", search_req: this.searchReq,
                     radio: this.checkVac,
-                    check: this.checks})
+                    check: this.checks
+                })
                     .then((res) => {
                         console.log(res.data);
                         console.log(res)
@@ -130,18 +122,6 @@
                 // let {da1, da2} = JSON.parse(xhr.response);
                 // addRes(da1);
                 // addVac(da1, da2);
-            },
-            main() {
-                this.page = 0;
-            },
-            auth() {
-                this.page = 1;
-            },
-            authR() {
-                this.page = 2;
-            },
-            profile() {
-                this.page = 3;
             },
         }
     }
@@ -172,7 +152,7 @@
         z-index: 10;
     }
 
-    span.logo {
+    .logo {
         position: relative;
         top: 17%;
         margin-left: 17%;
@@ -345,12 +325,21 @@
         margin-left: 0;
     }
 
-    span#log, span#reg, span#pro {
+    a {
+        text-decoration: none;
+        outline: none;
+    }
+
+    a:visited {
+        color: #231f20;
+    }
+
+    a#log, a#reg, a#pro {
         position: relative;
         top: 1%;
     }
 
-    span#log {
+    #log {
         padding: 7px 10px;
         margin-right: -10px;
         color: #231f20;
@@ -359,7 +348,7 @@
         outline: none;
     }
 
-    span#log:hover {
+    #log:hover {
         background-color: rgba(0, 0, 0, 0.06);
     }
 
@@ -393,6 +382,7 @@
         outline: 0;
         animation-duration: 1s;
         transition: background-color 0.4s;
+        text-align: center;
     }
 
     button#submit:hover, #submit1:hover {

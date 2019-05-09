@@ -2,7 +2,7 @@
     <div>
         <sheader :logged="false"/>
         <div id="login">
-            <h1 id="form_h">Вход в аккаунт</h1>
+            <h1 id="form_h">Регистрация аккаунта</h1>
             <form class="reg_form" method="post" action="">
                 <div class="mail_container">
                     <label id="email_label" for="email">Электронная почта:</label><br/>
@@ -24,11 +24,9 @@
 
 <script>
     import Sheader from "@/components/sheader";
-
     export default {
-        name: "login",
-        components: {Sheader},
-        props: ['title'],
+        name: "signup",
+        components: {Sheader}
     }
 </script>
 

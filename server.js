@@ -77,6 +77,11 @@ db.none(`CREATE TABLE IF NOT EXISTS vacancy(
         console.log(`${getTime()} Table wasnt created`, err)
     });
 
+app.get('/', (req, res) => {
+    // res.sendFile('../public/index.html')
+    // TODO: add app rendering
+});
+
 app.post('/', jsonParser, (req, res) => {
     console.log(getTime() , req.body, req.body.search_req, req.body.radio, req.body.check);
     switch (req.body.type) {
@@ -341,7 +346,8 @@ app.post('/profile', jsonParser, (req, res) => {
 
 
 ///Sending styles & scripts
-app.use('/src/assets', express.static('assets'));
+app.use('/src', express.static('src'));
+app.use('/public', express.static('public'));
 
 
 const port = 200;
