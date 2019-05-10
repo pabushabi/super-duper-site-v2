@@ -13,7 +13,7 @@
                     <input id="pass" type="password" name="password" pattern="(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,32}"
                            title="8-32 латинских буквы(минимум одна заглавная и одна строчная) и цифры"
                            placeholder="qwerty" required="required"/>
-                    <img id="visible" src="/src/assets/visible.svg" alt="visible"/>
+                    <img id="visible" src="../assets/visible.svg" alt="visible"/>
                 </div>
                 <button id="submit" type="submit">Подтвердить!</button>
             </form>

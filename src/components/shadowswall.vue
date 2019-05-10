@@ -156,7 +156,7 @@
         position: relative;
         top: 17%;
         margin-left: 17%;
-        font-weight: bold;
+        font-weight: normal;
         background: linear-gradient(75deg, var(--mainColor), #6d78ff);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -325,9 +325,18 @@
         margin-left: 0;
     }
 
+    #visible {
+        position: absolute;
+        top: 98px;
+        left: 280px;
+        width: 20px;
+        cursor: pointer;
+    }
+
     a {
         text-decoration: none;
         outline: none;
+        color: #231f20;
     }
 
     a:visited {
@@ -362,6 +371,7 @@
     #form_h {
         text-align: center;
         width: 100%;
+        font-weight: normal;
     }
 
     #email_label, #pass_label {

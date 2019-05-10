@@ -9,6 +9,8 @@ const db = pgp(config.path);
 const jsonParser = express.json();
 const crypto = require('crypto');
 const session = require('cookie-session');
+const serveStatic = require('serve-static');
+app.use(serveStatic(__dirname + '/dist'));
 
 app.use(session({
     name: 'session',
@@ -77,10 +79,6 @@ db.none(`CREATE TABLE IF NOT EXISTS vacancy(
         console.log(`${getTime()} Table wasnt created`, err)
     });
 
-app.get('/', (req, res) => {
-    // res.sendFile('../public/index.html')
-    // TODO: add app rendering
-});
 
 app.post('/', jsonParser, (req, res) => {
     console.log(getTime() , req.body, req.body.search_req, req.body.radio, req.body.check);
