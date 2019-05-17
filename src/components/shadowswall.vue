@@ -5,34 +5,34 @@
             <div class="search_bar">
                 <form class="search_form" method="post" action="/" name="search">
                     <label id="search_label" for="search_input">Поиск {{searchReq}}</label>
-                    <input id="search_input" type="search" name="search_req" autocomplete="off"
+                    <input id="search_input" type="search" autocomplete="off"
                            placeholder="Введите запрос" v-model="searchReq"/>
                     <p id="askingfor">Я ищу:</p>
                     <ul class="radio-ul" type="none">
                         <li class="radio-li">
-                            <input class="radio" id="r1" name="radio-type" value="1" type="radio" v-model="checkVac"/>
+                            <input class="radio" id="r1" value="1" type="radio" v-model="checkVac"/>
                             <label class="label_radio" for="r1">Работника</label>
                         </li>
                         <li class="radio-li">
-                            <input class="radio" id="r2" name="radio-type" value="2" type="radio" v-model="checkVac"/>
+                            <input class="radio" id="r2" value="2" type="radio" v-model="checkVac"/>
                             <label class="label_radio" for="r2">Работу</label>
                         </li>
                     </ul>
                     <ul type="none">
                         <li>
-                            <input class="radio" id="c1" type="checkbox" value="1" name="check_" v-model="checks"/>
+                            <input class="radio" id="c1" type="checkbox" value=1 name="check_" v-model.number="checks"/>
                             <label class="label_check" for="c1">Высшее образование</label>
                         </li>
                         <li>
-                            <input class="radio" id="c2" type="checkbox" value="2" name="check_" v-model="checks"/>
+                            <input class="radio" id="c2" type="checkbox" value=2 name="check_" v-model.number="checks"/>
                             <label class="label_check" for="c2">Полный день</label>
                         </li>
                         <li>
-                            <input class="radio" id="c3" type="checkbox" value="3" name="check_" v-model="checks"/>
+                            <input class="radio" id="c3" type="checkbox" value=3 name="check_" v-model.number="checks"/>
                             <label class="label_check" for="c3">Стаж больше 10 лет</label>
                         </li>
                         <li>
-                            <input class="radio" id="c4" type="checkbox" value="4" name="check_" v-model="checks"/>
+                            <input class="radio" id="c4" type="checkbox" value=4 name="check_" v-model.number="checks"/>
                             <label class="label_check" for="c4">З/п больше 30000р</label>
                         </li>
                     </ul>
@@ -52,6 +52,18 @@
                         <br> Желаемая заработная плата: <b>{{item.pay_b}}р - {{item.pay_t}}р</b>.
                         <br> Коротко о себе: {{item.about}}</p>
                 </article>
+                <article v-for="(item, index) in vacs" :key="index + items.length" :id="index + items.length"
+                         :class="['art', {resized : currentArt === index}]"
+                         @click="currentArt = currentArt === index ? -1 : index">
+                    <h2>Вакансия {{item.specialization}} в "{{item.name}}"</h2>
+                    <p class="text">Организация "{{item.name}}" ищет людей, удовлетворяющих требованиям:
+                        <br> Специализация: <b>{{item.specialization}}</b>,
+                        <br> Возраст: {{item.age}}, Опыт работы: <b>{{item.experience}}</b>,
+                        <br> Высшее образование: {{(item.education === 'true') ? 'Да' : 'Нет'}}
+                        <br> Предпочитаемый режим работы: {{item.time_mode}},
+                        <br> Предоставляемая заработная плата: <b>{{item.pay_b}}р - {{item.pay_t}}р</b>.
+                        <br> Коротко о компании (дополнительные требования): {{item.about}}</p>
+                </article>
             </section>
         </div>
     </div>
@@ -69,12 +81,13 @@
             return {
                 currentArt: -1,
                 items: [],
+                vacs: [],
                 searchReq: '',
                 checks: [],
+                checl: [],
                 checkVac: '',
                 logged: false,
                 user: "",
-                page: 0,
             }
         },
         computed: {},
@@ -83,19 +96,23 @@
                 this.sendReq()
             },
             checks: function () {
+                // for (let i = 0; i < 4; i++)
+                //     this.checl[this.checks[i] - 1] = this.checks[i] || null;
                 this.sendReq()
             },
             checkVac: function () {
                 this.sendReq()
-            }
+            },
         },
         mounted() {
-            axios.post("http://localhost:200/", {type: "articles"})
+            axios.post("http://localhost:8000/", {type: "articles"})
                 .then((res) => {
                     console.log(res);
                     // let {da1, da2} = JSON.parse(res.data);
                     this.items = res.data.da1;
+                    this.vacs = res.data.da2;
                     console.log(res.data.da1);
+                    console.log(res.data.da2)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -103,14 +120,18 @@
         },
         methods: {
             sendReq() {
-                axios.post("http://localhost:200/", {
+                // for (let i in this.checks)
+                //     this.checks[i] *= 1;
+                axios.post("http://localhost:8000/", {
                     type: "search", search_req: this.searchReq,
                     radio: this.checkVac,
                     check: this.checks
                 })
                     .then((res) => {
                         console.log(res.data);
-                        console.log(res)
+                        console.log(res);
+                        this.items = res.data.da1;
+                        this.vacs = res.data.da2;
                     })
                     .catch((err) => {
                         console.log(err)
@@ -399,5 +420,18 @@
         box-shadow: 3px 3px 12px rgba(27, 31, 35, 0.15);
         /*background-color: rgba(242, 96, 101, 0.85);*/
         background: linear-gradient(-75deg, var(--mainColor), #6d78ff);
+    }
+
+    button#submit::after, #submit1::after {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        background: inherit;
+        top: 0;
+        left: 0;
+        filter: blur(0.4rem);
+        opacity: .9;
+        z-index: -1;
     }
 </style>

@@ -11,28 +11,28 @@
                 <p class="change" v-if="!resume">Вакансия</p>
                 <p class="change" v-if="resume">Резюме</p>
             </div>
-            <form class="resume-form" action="" method="post" name="Resume" v-if="!resume">
+            <form class="resume-form" action="" method="post" v-if="!resume">
                 <label><span>Имя:</span>
-                    <input id="i-name" type="text" name="Name" maxlength="19" required placeholder="Иван" v-model="Name">
+                    <input id="i-name" type="text" maxlength="19" required placeholder="Иван" v-model="profile.Name">
                 </label><br>
                 <label><span>Фамилия:</span>
-                    <input id="i-secname" type="text" name="SecondName" maxlength="10" required placeholder="Иванов"
-                           v-model="Second">
+                    <input id="i-secname" type="text" maxlength="10" required placeholder="Иванов"
+                           v-model="profile.Second">
                 </label><br>
                 <label><span>Дата рождения:</span>
-                    <input class="inp-num" id="i-date" type="date" name="Birthdate" min="1900-01-01" max="" required
-                           v-model="Birthdate">
+                    <input class="inp-num" id="i-date" type="date" min="1900-01-01" max="" required
+                           v-model="profile.Birthdate">
                 </label><br>
                 <label><span id="bug">Высшее образование</span>
-                    <input class="radio" id="i-ed" type="checkbox" name="Education" v-model="Education">
+                    <input class="radio" id="i-ed" type="checkbox" v-model="profile.Education">
                 </label><br>
                 <label><span>Стаж работы:</span>
-                    <input class="inp-num" id="i-ex" type="number" min="0" max="50" value="0" name="Experience"
-                           required v-model="Experience">
+                    <input class="inp-num" id="i-ex" type="number" min="0" max="50" value="0"
+                           required v-model="profile.Experience">
                 </label><br>
                 <label><span>Специализация:</span>
-                    <select id="select-spec" name="Specialization" style="width: 150px; height: 33px;" required
-                            v-model="Specialization">
+                    <select id="select-spec" style="width: 150px; height: 33px;" required
+                            v-model="profile.Specialization">
                         <option value="Программист">Программист</option>
                         <option value="Инженер">Инженер</option>
                         <option value="Фотограф">Фотограф</option>
@@ -41,11 +41,11 @@
                     </select>
                 </label><br>
                 <label><span>Телефон:</span>
-                    <input id="i-tel" type="tel" name="Phone" pattern="\+[0-9]{1,3}\([0-9]{3,4}\)[0-9]{3}-[0-9]{4}"
-                           maxlength="19" placeholder="+1(999)999-9999" v-model="Phone">
+                    <input id="i-tel" type="tel" pattern="\+[0-9]{1,3}\([0-9]{3,4}\)[0-9]{3}-[0-9]{4}"
+                           maxlength="19" placeholder="+1(999)999-9999" v-model="profile.Phone">
                 </label><br>
                 <label><span>Предпочитаемый режим работы:</span>
-                    <select id="time-mode" name="Time-mode" style="width: 200px; height: 33px;" required v-model="Time">
+                    <select id="time-mode" style="width: 200px; height: 33px;" required v-model="profile.Time">
                         <option value="Полный день">Полный день</option>
                         <option value="Частичная занятость">Частичная занятость</option>
                         <option value="Плавающий график">Плавающий график</option>
@@ -54,33 +54,35 @@
                 </label><br>
                 <label><span>Желаемая зароботная плата:</span>
                     <input class="inp-num" id="i-payb" type="number" min="0" max="9000000" value="0" step="1000"
-                           name="Pay-b" required v-model="Pay_b"><span>-</span>
+                           required v-model="profile.Pay_b"><span>-</span>
                     <input class="inp-num" id="i-payt" type="number" min="0" max="9000000" value="0" step="1000"
-                           name="Pay-t" required v-model="Pay_t">
+                           required v-model="profile.Pay_t">
                 </label><br>
                 <label><span>О себе:</span>
-                    <textarea id="i-about" name="About" required placeholder="Коротко о себе" v-model="About"></textarea>
+                    <textarea id="i-about" required placeholder="Коротко о себе" v-model="profile.About"></textarea>
                 </label><br><span id="error">Все поля должны быть заполнены!</span>
                 <button id="submit" type="button" @click.prevent="resume_submit">Сохранить</button>
             </form>
 
-            <form class="vac-form" action="" method="post" name="Vacancy" v-if="resume">
+            <form class="vac-form" action="" method="post" v-if="resume">
                 <label><span>Название организации:</span>
-                    <input id="v-name" type="text" name="Name" maxlength="40" required placeholder="Рога и копыта">
+                    <input id="v-name" type="text" maxlength="40" required placeholder="Рога и копыта"
+                           v-model="vacancy.Name">
                 </label><br>
                 <label><span>Желаемый возраст:</span>
-                    <input class="inp-num" id="v-date" type="number" name="Age" min="15" max="100" required
-                           placeholder="25">
+                    <input class="inp-num" id="v-date" type="number" min="15" max="100" required
+                           placeholder="25" v-model="vacancy.Age">
                 </label><br>
                 <label><span id="bug1">Высшее образование</span>
-                    <input class="radio" id="v-ed" type="checkbox" name="Education">
+                    <input class="radio" id="v-ed" type="checkbox" v-model="vacancy.Education">
                 </label><br>
                 <label><span>Желаемый стаж работы:</span>
-                    <input class="inp-num" id="v-ex" type="number" min="0" max="70" name="Experience" required
-                           placeholder="10">
+                    <input class="inp-num" id="v-ex" type="number" min="0" max="70" required
+                           placeholder="10" v-model="vacancy.Experience">
                 </label><br>
                 <label><span>Желаемая специализация:</span>
-                    <select id="select-vac" name="Specialization" style="width: 150px; height: 33px;" required>
+                    <select id="select-vac" style="width: 150px; height: 33px;" required
+                            v-model="vacancy.Specialization">
                         <option value="Программист">Программист</option>
                         <option value="Инженер">Инженер</option>
                         <option value="Фотограф">Фотограф</option>
@@ -89,11 +91,11 @@
                     </select>
                 </label><br>
                 <label><span>Телефон:</span>
-                    <input id="v-tel" type="tel" name="Phone" pattern="\+[0-9]{1,3}\([0-9]{3,4}\)[0-9]{3}-[0-9]{4}"
-                           maxlength="19" placeholder="+1(999)999-9999">
+                    <input id="v-tel" type="tel" pattern="\+[0-9]{1,3}\([0-9]{3,4}\)[0-9]{3}-[0-9]{4}"
+                           maxlength="19" placeholder="+1(999)999-9999" v-model="vacancy.Phone">
                 </label><br>
                 <label><span>Предпочитаемый режим работы:</span>
-                    <select id="time" name="Time-mode" style="width: 200px; height: 33px;" required>
+                    <select id="time" style="width: 200px; height: 33px;" required v-model="vacancy.Time">
                         <option value="Полный день">Полный день</option>
                         <option value="Частичная занятость">Частичная занятость</option>
                         <option value="Плавающий график">Плавающий график</option>
@@ -102,14 +104,14 @@
                 </label><br>
                 <label><span>Желаемая зароботная плата:</span>
                     <input class="inp-num" id="v-payb" type="number" min="0" max="9000000" value="0" step="1000"
-                           name="Pay-b" required><span>-</span>
+                           required v-model="vacancy.Pay_b"><span>-</span>
                     <input class="inp-num" id="v-payt" type="number" min="0" max="9000000" value="0" step="1000"
-                           name="Pay-t" required>
+                           required v-model="vacancy.Pay_t">
                 </label><br>
                 <label><span>Об организации (дополнительные требования):</span>
-                    <textarea id="v-about" name="About" required placeholder="Коротко об организации"></textarea>
+                    <textarea id="v-about" required placeholder="Коротко об организации" v-model="vacancy.About"></textarea>
                 </label><br><span id="error1">Все поля должны быть заполнены!</span>
-                <button id="submit1" type="button" onclick="vac_submit()">Сохранить</button>
+                <button id="submit1" type="button" @click="vac_submit" :style="Stylys">Сохранить</button>
             </form>
         </div>
 
@@ -125,21 +127,42 @@
         data() {
             return {
                 resume: false,
-                Name: "",
-                Second: "",
-                Birthdate: "",
-                Education: "",
-                Experience: 0,
-                Specialization: "",
-                Phone: "",
-                Time: "",
-                Pay_b: 0,
-                Pay_t: 0,
-                About: "",
+                Stylys: {
+                    color: "green"
+                },
+                profile: {
+                    Name: "",
+                    Second: "",
+                    Birthdate: "",
+                    Education: false,
+                    Experience: 0,
+                    Specialization: "",
+                    Phone: "",
+                    Time: "",
+                    Pay_b: 0,
+                    Pay_t: 0,
+                    About: ""
+                },
+                vacancy: {
+                    Name: "",
+                    Age: 0,
+                    Education: false,
+                    Experience: 0,
+                    Specialization: "",
+                    Phone: "",
+                    Time: "",
+                    Pay_b: 0,
+                    Pay_t: 0,
+                    About: ""
+                },
+
             }
         },
         methods: {
             resume_submit() {
+
+            },
+            vac_submit() {
 
             }
         }

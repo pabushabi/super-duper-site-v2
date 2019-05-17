@@ -81,7 +81,7 @@ db.none(`CREATE TABLE IF NOT EXISTS vacancy(
 
 
 app.post('/', jsonParser, (req, res) => {
-    console.log(getTime() , req.body, req.body.search_req, req.body.radio, req.body.check);
+    console.log(getTime() , req.body);
     switch (req.body.type) {
         case "articles": {
             let da1, da2;
@@ -113,6 +113,7 @@ app.post('/', jsonParser, (req, res) => {
             console.log(req.body);
             if (req.body.radio === "2") {
                 let check = req.body.check.toString();
+                console.log(check);
                 let search = req.body.search_req.toString();
                 if (req.body.search_req !== "")
                     db.any(`SELECT * FROM vacancy WHERE name ~* '${search}' OR specialization ~* '${search}' OR time_mode ~* '${search}' 
@@ -348,7 +349,7 @@ app.use('/src', express.static('src'));
 app.use('/public', express.static('public'));
 
 
-const port = 200;
+const port = 8000;
 app.listen(port, () => {
     console.log(`${getTime()} Server running at http://127.0.0.1:${port} (http://localhost:${port})`);
 });
