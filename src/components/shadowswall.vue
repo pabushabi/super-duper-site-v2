@@ -88,7 +88,6 @@
                 checkVac: '',
                 logged: false,
                 user: "",
-                text: "Hello world",
             }
         },
         computed: {},
@@ -114,14 +113,6 @@
                     this.vacs = res.data.da2;
                     console.log(res.data.da1);
                     console.log(res.data.da2)
-                })
-                .catch((err) => {
-                    console.log(err)
-                }),
-
-            axios.get(`http://translate.google.ru/translate_a/t?client=x&text=${this.text}&hl=en&sl=en&tl=ru`, {headers: "Access-Control-Allow-Origin"})
-                .then((res) => {
-                    console.log(res)
                 })
                 .catch((err) => {
                     console.log(err)
