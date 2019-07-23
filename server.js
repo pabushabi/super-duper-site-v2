@@ -1,6 +1,7 @@
 'use strict';
 const express = require('express');
 const app = express();
+const compression = require('compression');
 const bodyParser = require('body-parser');
 const urlencodedParser = bodyParser.urlencoded({extended: false});
 const pgp = require('pg-promise')();
@@ -10,6 +11,7 @@ const jsonParser = express.json();
 const crypto = require('crypto');
 const session = require('cookie-session');
 const serveStatic = require('serve-static');
+app.use(compression());
 app.use(serveStatic(__dirname + '/dist'));
 
 app.use(session({

@@ -105,7 +105,7 @@
             },
         },
         mounted() {
-            axios.post("http://localhost:8000/", {type: "articles"})
+            axios.post("/", {type: "articles"})
                 .then((res) => {
                     console.log(res);
                     // let {da1, da2} = JSON.parse(res.data);
@@ -122,7 +122,7 @@
             sendReq() {
                 // for (let i in this.checks)
                 //     this.checks[i] *= 1;
-                axios.post("http://localhost:8000/", {
+                axios.post("/", {
                     type: "search", search_req: this.searchReq,
                     radio: this.checkVac,
                     check: this.checks
